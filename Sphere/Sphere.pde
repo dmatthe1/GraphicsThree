@@ -1,12 +1,24 @@
 float theta = 0;
 Star[] stars = new Star[800];
+ArrayList<Planet> system;
 
 void setup() {
   size(1500, 800);
-  //noStroke();
-  for (int i = 0; i < stars.length; i++) {
-    stars[i] = new Star();
-  }
+  
+  //star initialization
+  for (int i = 0; i < stars.length; i++) stars[i] = new Star();
+  
+  //planets
+  system = new ArrayList<Planet>();
+  system.add(new Planet(200, color(249, 215, 28), 0, 0, new Planet[]{})); //Sun
+  system.add(new Planet(10, color(181, 167, 167), 1.6, 150, new Planet[]{})); //Mercury
+  system.add(new Planet(13, color(139,125,130), 1, 175, new Planet[]{})); //Venus
+    system.add(new Planet(20, color(50, 200, 255), 1.2, 200, new Planet[]{
+       new Planet(4, color(50, 255, 200), 4, 13, new Planet[]{})
+    })); //Earth
+  system.add(new Planet(20, color(161, 37,27), 1.5, 250, new Planet[]{})); //Mars
+  system.add(new Planet(34, color(206,184,184), 0.8, 300, new Planet[]{})); //Saturn
+  system.add(new Planet(6, color(50, 255, 200), 3, 400, new Planet[]{})); //Pluto
 }
 
 void draw() {
@@ -14,84 +26,30 @@ void draw() {
   background(0);
   translate(width/2, height/2);
   
-  //sun
-  fill(249, 215, 28);
-  ellipse(0, 0, 200, 200);
-  
-  //Mercury
-  pushMatrix();
-  rotate(theta*1.6);
-  translate(150, 0);
-  fill(181, 167, 167);
-  ellipse(0, 0, 10, 10);
-  popMatrix();
-  
-  //Venus
-  pushMatrix();
-  rotate(theta);
-  translate(175, 0);
-  fill(139,125,130);
-  ellipse(0, 0, 13, 13);
-  popMatrix();
-  
-  //Earth
-  pushMatrix();
-  rotate(theta*1.2);
-  translate(200, 0);
-  fill(50, 200, 255);
-  ellipse(0, 0, 20, 20);
-  
-    pushMatrix(); 
-    rotate(-theta*4);
-    translate(13, 0);
-    fill(50, 255, 200);
-    ellipse(0, 0, 4, 4);
-    popMatrix();
-  
-  /**
-    // Moon #2 also rotates around the earth
-    pushMatrix();
-    rotate(theta*2);
-    translate(30, 0);
-    fill(50, 255, 200);
-    ellipse(0, 0, 6, 6);
-    popMatrix();
-  **/
-  
-  popMatrix();
-  
-  //Mars
-  pushMatrix();
-  rotate(theta*1.5);
-  translate(250, 0);
-  fill(161, 37,27);
-  ellipse(0, 0, 20, 20);
-  popMatrix();
-  
-  //Saturn
-  pushMatrix();
-  rotate(theta*0.8);
-  translate(300, 0);
-  fill(206,184,184);
-  ellipse(0, 0, 30, 30);
-  noFill();
-  stroke(255);
-  ellipse(0, 0, 34, 34);
-  
-  popMatrix();
-  
-  //Pluto
-  pushMatrix();
-  rotate(theta*3);
-  translate(400, 0);
-  fill(50, 255, 200);
-  ellipse(0, 0, 6, 6);
-  popMatrix();
-
-
-for (int i = 0; i < stars.length; i++) {
+  for (int i = 0; i < stars.length; i++) {
     stars[i].update();
     stars[i].show();
+  }
+  
+  noStroke();
+  
+  for (Planet planet : system) {
+     pushMatrix();
+     rotate(theta * planet.speed);
+     translate(planet.translation, 0);
+     fill(planet.c);
+     ellipse(0, 0, planet.r, planet.r);
+     
+     for (Planet moon : planet.moons) {
+       pushMatrix();
+       rotate(theta * moon.speed);
+       translate(moon.translation, 0);
+       fill(moon.c);
+       ellipse(0, 0, moon.r, moon.r);
+       popMatrix();
+     }
+     
+     popMatrix();
   }
   
   theta += 0.01;

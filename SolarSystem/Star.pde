@@ -1,3 +1,4 @@
+
 float speed = 6;
 
 class Star {
@@ -46,7 +47,7 @@ class Star {
     float sy = map(y / z, 0, 1, 0, height/2);;
 
     //sizing the star
-    float r = map(z, 0, width/2, 8, 0);
+    float r = map(z, 0, width/2, 6, 0);
     
     ellipse(sx, sy, r, r);
 
