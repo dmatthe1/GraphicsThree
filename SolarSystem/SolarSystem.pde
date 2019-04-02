@@ -6,7 +6,7 @@ float tempY;
 
 //system variables
 ArrayList<Planet> system;
-Star[] stars = new Star[800];
+Star[] stars = new Star[100];
 float theta = 0;
 
 void setup(){
@@ -24,20 +24,20 @@ void setup(){
   
   //Planet Additions
   system = new ArrayList<Planet>();
-  system.add(new Planet(loadImage("sun.jpg"), createShape(SPHERE,200), 0, 0)); //Sun
-  system.add(new Planet(loadImage("earth.png"), createShape(SPHERE,100), 1, 500, new Planet[]{
+  system.add(new Planet(loadImage("sun.jpg"), createShape(SPHERE,300), 0, 0)); //Sun
+  system.add(new Planet(loadImage("earth.png"), createShape(SPHERE,100), 1, 1500, new Planet[]{
       new Planet(loadImage("moon.jpg"), createShape(SPHERE,20), 365, 150, new Planet[]{})
   })); //Earth
-  system.add(new Planet(loadImage("ball.jpg"), createShape(SPHERE,30), 1.2, 800)); 
-  system.add(new Planet(loadImage("ball.jpg"), createShape(SPHERE,10), -.7, 100)); 
-  system.add(new Planet(loadImage("momo.jpg"), createShape(SPHERE,150), 0.5, 1000, new Ring[]{
+  system.add(new Planet(loadImage("ball.jpg"), createShape(SPHERE,30), 1.2, 1000)); 
+  system.add(new Planet(loadImage("ball.jpg"), createShape(SPHERE,10), -.7, 1100)); 
+  system.add(new Planet(loadImage("momo.jpg"), createShape(SPHERE,150), 0.5, 2000, new Ring[]{
       new Ring(10, 0.45, 350, color(72,0,72)),
       new Ring(10, 0.45, 400, color(128,0,128)),
       new Ring(10, 0.45, 450, color(200,0,200))
   })); 
   
   //Star Additions
-  for (int i = 0; i < stars.length; i++) stars[i] = new Star();
+  for (int i = 0; i < stars.length; i++) stars[i] = new Star( createShape(SPHERE,5));
 }
 
 void draw(){
@@ -67,7 +67,7 @@ void draw(){
   //Star System Drawing
   for (int i = 0; i < stars.length; i++) {
     stars[i].update();
-    //stars[i].show();
+    stars[i].show();
   }
 
   //Planet System Drawing

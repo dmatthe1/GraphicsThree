@@ -1,4 +1,3 @@
-
 float speed = 6;
 
 class Star {
@@ -7,6 +6,8 @@ class Star {
   float y;
   float z;
 
+  PShape model; 
+  
   //previous location
   float pz;
   
@@ -14,16 +15,13 @@ class Star {
   int c;
 
 
-  Star() {
+  Star(PShape model) {
     //location setting
     x = random(-width/2, width/2);
     y = random(-height/2, height/2);
-    z = random(width/2);
+    z = 0;
     pz = z;
-    
-    //color setting
-    if (random(0, 100) < 60) c = 255;
-    else c = 0;
+    this.model = model;
   }
 
   void update() {
@@ -31,7 +29,7 @@ class Star {
     z = z - speed;
     
     //respawn
-    if (z < 1) {
+    if (x > width || x < 0 || y > height || y < 0) {
       z = width/2;
       x = random(-width/2, width/2);
       y = random(-height/2, height/2);
@@ -40,7 +38,7 @@ class Star {
   }
 
   void show() {
-    fill(255, c, c);
+    fill(255, 255, 255);
     noStroke();
 
     float sx = map(x / z, 0, 1, 0, width/2);
@@ -55,9 +53,9 @@ class Star {
     float py = map(y / pz, 0, 1, 0, height/2);
 
     pz = z;
-
+    shape(model);
     //star tail
-    stroke(255, 255, c);
+    stroke(255, 255, 255);
     line(px, py, sx, sy);
   }
 }
