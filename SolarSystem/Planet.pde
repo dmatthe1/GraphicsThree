@@ -62,6 +62,10 @@ class Planet {
      globe.setTexture(img);
   }
   
+  void setTexture(PImage img, PShape globe) {
+    
+  }
+  
   void display() {
      rotate(theta * speed);
      translate(translation, 0);

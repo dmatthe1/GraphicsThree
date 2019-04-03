@@ -1,4 +1,6 @@
 float speed = 6;
+float lowerL = -5000;
+float upperL = 5000; 
 
 class Star {
   //location
@@ -6,7 +8,16 @@ class Star {
   float y;
   float z;
 
+  //speed
+  float xS;
+  float yS;
+  float zS;
+
+  float upperL;
+  float lowerL;
+
   PShape model; 
+  PImage img;
   
   //previous location
   float pz;
@@ -15,47 +26,48 @@ class Star {
   int c;
 
 
-  Star(PShape model) {
-    //location setting
-    x = random(-width/2, width/2);
-    y = random(-height/2, height/2);
-    z = 0;
+  Star(float upper, float lower, PShape model, PImage image) {
+    upperL = upper;
+    lowerL = lower;
+    
+    reset();
+
+    img = image; 
+    
     pz = z;
     this.model = model;
+    
+    model.setTexture(img);
+  }
+
+  void reset() {
+    x = random(lowerL, upperL);
+    y = random(lowerL, upperL);
+    z = random(lowerL, upperL);
+    
+    xS = random(-5, 5);
+    yS = random(-5, 5);
+    zS = random(-5, 5);
   }
 
   void update() {
     //tick movement
-    z = z - speed;
+    x += xS;
+    y += yS;
+    z += zS;
     
     //respawn
-    if (x > width || x < 0 || y > height || y < 0) {
-      z = width/2;
-      x = random(-width/2, width/2);
-      y = random(-height/2, height/2);
+    if (x > upperL || x < lowerL || y > upperL || y < lowerL) {
+      reset();
+      
       pz = z;
-    }
+    }    
   }
-
+  
   void show() {
-    fill(255, 255, 255);
-    noStroke();
-
-    float sx = map(x / z, 0, 1, 0, width/2);
-    float sy = map(y / z, 0, 1, 0, height/2);;
-
-    //sizing the star
-    float r = map(z, 0, width/2, 6, 0);
-    
-    ellipse(sx, sy, r, r);
-
-    float px = map(x / pz, 0, 1, 0, width/2);
-    float py = map(y / pz, 0, 1, 0, height/2);
-
-    pz = z;
+    pushMatrix();
+    translate(x, y, z);
     shape(model);
-    //star tail
-    stroke(255, 255, 255);
-    line(px, py, sx, sy);
+    popMatrix(); 
   }
 }

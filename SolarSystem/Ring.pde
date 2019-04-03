@@ -12,12 +12,12 @@ class Ring {
   }
   
   void display() {
-    //pushMatrix();
+    pushMatrix();
     stroke(col);
     strokeWeight(weight);
     noFill();
     rotateX(HALF_PI-rotation);
     ellipse(0,0, size, size);
-    //popMatrix();
+    popMatrix();
   }
 }
