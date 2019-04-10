@@ -29,8 +29,7 @@ void setup(){
   system = new ArrayList<TexturePlanet>();
   
   //TexturePlanet
-  system.add(new TexturePlanet("Sun", 500, 30, loadImage("sun.jpg"), 0, 0));
-  //system.add(new Planet(loadImage("TexturePlanet.jpg"), createShape(SPHERE,200), 0, 0)); 
+  system.add(new TexturePlanet("Sun", 500, 60, loadImage("sun.jpg"), 0, 0));
   
   //Mercury
   system.add(new TexturePlanet("Mercury", 40, 30, loadImage("mercury.jpg"), 58.8, 1500)); 
@@ -75,19 +74,20 @@ void draw(){
   pushMatrix();
   textureMode(NORMAL);
   
+  
+  translate(width/2, height/2);
+  
   //Camera 
   TexturePlanet focus = system.get(planetSwitch);
-  camera(focus.translation, 5000, height, width/2, height/2, 0, 0, 1, 0);
+  float currX = focus.getX(theta);
+  float currY = focus.getY(theta);
+  camera(currX, currY + focus.sph.r * 10, height, currX, currY, 0, 0, 1, 0);
   
   //Fills
   background(0);
   //lights();
   
-  
-  //Basic Transformations
-  translate(width/2, height/2);
-  //rotateX(-radians(0.5*frameCount));
-  //rotateY(-radians(0.5*frameCount));
+  translate(currX, currY);
 
   //Rotation
   if(mousePressed == true){
@@ -97,11 +97,13 @@ void draw(){
     tempY = -map(mouseX, 0, width, 0, TWO_PI);
   }
   else {
-    rotateX(tempX);
-    rotateY(tempY);
+    rotateX(-radians(0.5*frameCount));
+    rotateY(-radians(0.5*frameCount));
+    //rotateX(tempX);
+    //rotateY(tempY);
   }
   
-  
+  translate(-currX, -currY);
   
    //Star System Drawing
   for (Star star : stars) {
@@ -124,6 +126,7 @@ void draw(){
      pushMatrix();
      for (TexturePlanet moon : planet.moons) {
        if (spinning) rotate(theta * moon.speed);
+       else rotate(theta);
        translate(moon.translation, 0);
        moon.display();
      }
@@ -133,7 +136,8 @@ void draw(){
   
   popMatrix();
   //Incrementing Rotation
-  theta += 0.001;
+  if (spinning) theta += 0.001;
+  else theta = 0;
   
   fill(255);
   textAlign(CENTER);

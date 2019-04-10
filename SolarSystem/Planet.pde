@@ -25,7 +25,7 @@ class Planet {
      this.moons = new Planet[]{};
      this.rings = new Ring[]{};
      
-      globe.setTexture(img);
+     globe.setTexture(img);
   } 
   
   //No moons

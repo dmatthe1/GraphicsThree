@@ -16,7 +16,7 @@ class TextureSphere {
       float uStep = TWO_PI / n;
       float vStep = PI/n;
       for(float u = 0; u <TWO_PI-uStep; u+= uStep){
-        for(float v = -PI/2; v <PI/2-vStep; v += vStep){
+        for(float v = -PI/2; v <= PI/2-vStep; v += vStep){
           vertex(xpos(u, v), ypos(u, v), zpos(v), umap(u), vmap(v));
           vertex(xpos(u, v+vStep), ypos(u, v+vStep), zpos(v + vStep), umap(u), vmap(v+ vStep));
           vertex(xpos(u+uStep, v+vStep), ypos(u+uStep, v+vStep), zpos(v + vStep), umap(u+uStep), vmap(v+vStep));

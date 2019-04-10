@@ -54,9 +54,15 @@ class TexturePlanet {
     this.name = name;
   }
   
+  float getX(float theta) {
+    return translation * cos(theta * speed);
+  }
+  
+  float getY(float theta) {
+    return translation * sin(theta * speed);
+  }
+  
   void display() {
-     rotate(theta * speed);
-     translate(translation, 0);
      sph.display(); 
   }
 }
