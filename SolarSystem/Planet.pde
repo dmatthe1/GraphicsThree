@@ -2,6 +2,7 @@ class Planet {
   //color
   PImage img;
   PShape globe; 
+  TextureSphere sph;
   
   //positioning 
   float speed;
@@ -10,7 +11,10 @@ class Planet {
   //moons
   Planet[] moons;
   Ring[] rings;
-  
+ 
+  float x = 0;
+  float y = 0;
+ 
   //No rings or moons
   Planet(PImage img, PShape globe, float speed, float translation) {
      this.img = img;
@@ -22,7 +26,7 @@ class Planet {
      this.rings = new Ring[]{};
      
       globe.setTexture(img);
-  }
+  } 
   
   //No moons
   Planet(PImage img, PShape globe, float speed, float translation, Ring[] rings) {
@@ -67,8 +71,6 @@ class Planet {
   }
   
   void display() {
-     rotate(theta * speed);
-     translate(translation, 0);
      shape(globe); 
   }
 }

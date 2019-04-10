@@ -5,9 +5,12 @@ float tempX;
 float tempY;
 
 //system variables
-ArrayList<Planet> system;
+ArrayList<TexturePlanet> system;
 Star[] stars = new Star[800];
 float theta = 0;
+boolean spinning = true;
+
+int planetSwitch;
 
 void setup(){
   //canvas setup
@@ -23,89 +26,68 @@ void setup(){
   tempY = height/2;
   
   //Planet Additions
-  system = new ArrayList<Planet>();
+  system = new ArrayList<TexturePlanet>();
   
-  //Sun
-  system.add(new Planet(loadImage("sun.jpg"), createShape(SPHERE,200), 0, 0)); 
+  //TexturePlanet
+  system.add(new TexturePlanet("Sun", 500, 30, loadImage("sun.jpg"), 0, 0));
+  //system.add(new Planet(loadImage("TexturePlanet.jpg"), createShape(SPHERE,200), 0, 0)); 
   
   //Mercury
-  system.add(new Planet(loadImage(""), createShape(SPHERE,20), 58.8, 800)); 
+  system.add(new TexturePlanet("Mercury", 40, 30, loadImage("mercury.jpg"), 58.8, 1500)); 
   
   //Venus
-  system.add(new Planet(loadImage(""), createShape(SPHERE,20), 244, 1000)); 
+  system.add(new TexturePlanet("Venus", 40, 30, loadImage("venus.jpg"), 244, 1700)); 
   
   //Earth
-  system.add(new Planet(loadImage("earth.png"), createShape(SPHERE,100), 1, 1300, new Planet[]{
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,20), 10, 150, new Planet[]{})
+  system.add(new TexturePlanet("Earth", 70, 30, loadImage("earth.jpg"), 1, 1930, new TexturePlanet[]{
+      new TexturePlanet("Moon", 20, 30, loadImage("moon.jpg"), 10, 150)
   })); 
   
   //Mars
-  system.add(new Planet(loadImage(""), createShape(SPHERE,100), 1.029, 1800, new Planet[]{
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,20), 10, 150, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,20), 10, 200, new Planet[]{})
+  system.add(new TexturePlanet("Mars", 70, 30, loadImage("mars.jpg"), 1.029, 2410, new TexturePlanet[]{
+    
   })); 
   
   //Jupiter
-  system.add(new Planet(loadImage(""), createShape(SPHERE, 200), 0.411, 2000, new Planet[]{
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 150, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 260, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 170, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 180, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 190, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 200, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 210, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 220, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 230, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 240, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 250, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 260, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 270, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 280, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 290, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 300, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 310, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 350, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 360, new Planet[]{}),
-      new Planet(loadImage("moon.jpg"), createShape(SPHERE,6), 10, 370, new Planet[]{})
+  system.add(new TexturePlanet("Jupiter", 150, 30, loadImage("jupiter.jpg"), 0.411, 2800, new TexturePlanet[]{
   })); 
   
   //Saturn
-  system.add(new Planet(loadImage("momo.png"), createShape(SPHERE,150), 0.428, 2500, new Ring[]{
+  system.add(new TexturePlanet("Saturn", 130, 30, loadImage("saturn.jpg"), 0.428, 3500, new Ring[]{
       new Ring(10, 0.45, 350, color(72,0,72)),
-      new Ring(10, 0.45, 375, color(128,0,128)),
       new Ring(10, 0.45, 400, color(200,0,200)),
-      new Ring(10, 0.45, 425, color(72,0,72)),
       new Ring(10, 0.45, 450, color(128,0,128)),
-      new Ring(10, 0.45, 475, color(200,0,200))
   })); 
   
   
   //Uranus
-  system.add(new Planet(loadImage(""), createShape(SPHERE,30), 0.748, 3000));
+  system.add(new TexturePlanet("Ur Butt", 50, 30, loadImage("uranus.jpg"), 0.748, 4500));
   
   //Neptune
-  system.add(new Planet(loadImage(""), createShape(SPHERE,30), 0.802, 3000)); 
-  
-  //Pluto
-  system.add(new Planet(loadImage(""), createShape(SPHERE,10), 0.267, 4000)); 
-  
+  system.add(new TexturePlanet("Neptune", 50, 30, loadImage("neptune.jpeg"), 0.802, 5000));  
   
   //Star Additions
   for (int i = 0; i < stars.length; i++) stars[i] = new Star(upperL, lowerL, createShape(SPHERE,5), loadImage("meteor.jpg"));
 }
 
 void draw(){
+  
+  pushMatrix();
+  textureMode(NORMAL);
+  
   //Camera 
-  camera(x, y, height, width/2, height/2, 0, 0, 1, 0);
+  TexturePlanet focus = system.get(planetSwitch);
+  camera(focus.translation, 5000, height, width/2, height/2, 0, 0, 1, 0);
   
   //Fills
   background(0);
-  lights();
+  //lights();
   
   
   //Basic Transformations
   translate(width/2, height/2);
-  rotateY(-radians(0.5*frameCount));
+  //rotateX(-radians(0.5*frameCount));
+  //rotateY(-radians(0.5*frameCount));
 
   //Rotation
   if(mousePressed == true){
@@ -119,6 +101,8 @@ void draw(){
     rotateY(tempY);
   }
   
+  
+  
    //Star System Drawing
   for (Star star : stars) {
     star.update();
@@ -127,30 +111,45 @@ void draw(){
   
   emissive(150, 0, 100);
 
+
   //Planet System Drawing
-  for (Planet planet : system) {
+  for (TexturePlanet planet : system) {
      pushMatrix();
+     if (spinning) rotate(theta * planet.speed);
+     translate(planet.translation, 0);
      planet.display();
      
      for (Ring ring : planet.rings) ring.display();
      
      pushMatrix();
-     for (Planet moon : planet.moons) {
-       
-       rotateX(HALF_PI-0.45);
-       rotate(theta * moon.speed);
+     for (TexturePlanet moon : planet.moons) {
+       if (spinning) rotate(theta * moon.speed);
        translate(moon.translation, 0);
-       shape(moon.globe);
+       moon.display();
      }
      popMatrix();
      popMatrix();
   }
   
+  popMatrix();
   //Incrementing Rotation
   theta += 0.001;
+  
+  fill(255);
+  textAlign(CENTER);
+  textSize(30);
+  text("Solar System", width/2, height-50);
+  textSize(15);
+  text("Focusing on " + focus.name, width/2, height-30);
 }
 
 void keyPressed() {
-  println("ib here");
-   translate(500, 0); 
+  if (key == 'm') {
+    if (planetSwitch < system.size() - 1) planetSwitch++;
+    else planetSwitch = 0;
+  }
+  
+  if (key == 'n') {
+     spinning = !spinning; 
+  }
 }
