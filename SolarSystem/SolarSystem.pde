@@ -3,14 +3,13 @@ float x;
 float y;
 float tempX;
 float tempY;
+float theta = 0;
+boolean spinning = false;
 
 //system variables
 ArrayList<TexturePlanet> system;
 Star[] stars = new Star[800];
-float theta = 0;
-boolean spinning = true;
-
-int planetSwitch;
+int planetSwitch = 6;
 
 void setup(){
   //canvas setup
@@ -60,7 +59,7 @@ void setup(){
   
   
   //Uranus
-  system.add(new TexturePlanet("Ur Butt", 50, 30, loadImage("uranus.jpg"), 0.748, 4500));
+  system.add(new TexturePlanet("Uranus", 50, 30, loadImage("uranus.jpg"), 0.748, 4500));
   
   //Neptune
   system.add(new TexturePlanet("Neptune", 50, 30, loadImage("neptune.jpeg"), 0.802, 5000));  
@@ -97,8 +96,8 @@ void draw(){
     tempY = -map(mouseX, 0, width, 0, TWO_PI);
   }
   else {
-    rotateX(-radians(0.5*frameCount));
-    rotateY(-radians(0.5*frameCount));
+    //rotateX(-radians(0.5*frameCount));
+    rotateZ(radians(0.5*frameCount));
     //rotateX(tempX);
     //rotateY(tempY);
   }
