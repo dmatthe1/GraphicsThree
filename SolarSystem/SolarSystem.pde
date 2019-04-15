@@ -8,21 +8,20 @@ PVector cameraVector;
 PVector verticalVect;
 PVector horizontalVect;
 float angle;
-
 float eyeX;
 float eyeY;
 float eyeZ;
 float centerX;
 float centerY;
 float centerZ;
+float theta = 0;
+boolean spinning = false;
+
 
 //system variables
 ArrayList<TexturePlanet> system;
 Star[] stars = new Star[800];
-float theta = 0;
-boolean spinning = true;
-
-int planetSwitch;
+int planetSwitch = 6;
 
 void setup(){
   //canvas setup
@@ -75,7 +74,7 @@ void setup(){
   
   
   //Uranus
-  system.add(new TexturePlanet("Ur Butt", 50, 30, loadImage("uranus.jpg"), 0.748, 4500));
+  system.add(new TexturePlanet("Uranus", 50, 30, loadImage("uranus.jpg"), 0.748, 4500));
   
   //Neptune
   system.add(new TexturePlanet("Neptune", 50, 30, loadImage("neptune.jpeg"), 0.802, 5000));  
@@ -139,10 +138,14 @@ void draw(){
     */
   }
   else {
+
     /*
     rotateX(-radians(0.5*frameCount));
     rotateY(-radians(0.5*frameCount));
     */
+
+    //rotateX(-radians(0.5*frameCount));
+    //rotateZ(radians(0.5*frameCount));
     //rotateX(tempX);
     //rotateY(tempY);
     
