@@ -3,6 +3,18 @@ float x;
 float y;
 float tempX;
 float tempY;
+PVector rotAxis;
+PVector cameraVector;
+PVector verticalVect;
+PVector horizontalVect;
+float angle;
+
+float eyeX;
+float eyeY;
+float eyeZ;
+float centerX;
+float centerY;
+float centerZ;
 
 //system variables
 ArrayList<TexturePlanet> system;
@@ -18,6 +30,9 @@ void setup(){
   noStroke();
   sphereDetail(30);
   smooth();
+  verticalVect = new PVector(0, 1, 0);
+  horizontalVect = new PVector(1, 0, 0);
+  angle = 0;
   
   //rotation setup
   x = width/2;
@@ -67,10 +82,11 @@ void setup(){
   
   //Star Additions
   for (int i = 0; i < stars.length; i++) stars[i] = new Star(upperL, lowerL, createShape(SPHERE,5), loadImage("meteor.jpg"));
+  //pushMatrix();
 }
 
 void draw(){
-  
+  //popMatrix();
   pushMatrix();
   textureMode(NORMAL);
   
@@ -82,7 +98,13 @@ void draw(){
   float currX = focus.getX(theta);
   float currY = focus.getY(theta);
   camera(currX, currY + focus.sph.r * 10, height, currX, currY, 0, 0, 1, 0);
-  
+  eyeX = currX;
+  eyeY = currY + focus.sph.r * 10;
+  eyeZ = height;
+  centerX = currX;
+  centerY = currY;
+  centerZ = 0;
+  cameraVector = new PVector(eyeX-centerX, eyeY-centerY, eyeZ - centerZ);
   //Fills
   background(0);
   //lights();
@@ -90,17 +112,40 @@ void draw(){
   translate(currX, currY);
 
   //Rotation
+  
+  rotateAroundAxis(rotAxis, angle);
+  //println(angle);
+  //println(rotAxis.x + ", " + rotAxis.y + ", " + rotAxis.z);
+  
   if(mousePressed == true){
+    
+    float diffX = mouseX - pmouseX;
+    float diffY = mouseY - pmouseY;
+    float totalDist = sqrt(diffX*diffX + diffY*diffY);
+    angle = totalDist/width;
+    
+    PVector distVect = (horizontalVect.copy()).mult(diffX).add((verticalVect.copy()).mult(diffY)); 
+    // worldspace direction mouse moved ^^
+
+    //PVector distVect = new PVector(mouseX - pmouseX, mouseY - pmouseY, 0);
+    
+    rotAxis = distVect.cross(cameraVector);
+    
+    /*
     rotateX(-map(mouseY, 0, height, 0, TWO_PI));
     rotateY(-map(mouseX, 0, width, 0, TWO_PI));
     tempX = -map(mouseY, 0, height, 0, TWO_PI);
     tempY = -map(mouseX, 0, width, 0, TWO_PI);
+    */
   }
   else {
+    /*
     rotateX(-radians(0.5*frameCount));
     rotateY(-radians(0.5*frameCount));
+    */
     //rotateX(tempX);
     //rotateY(tempY);
+    
   }
   
   translate(-currX, -currY);
@@ -133,7 +178,7 @@ void draw(){
      popMatrix();
      popMatrix();
   }
-  
+  //pushMatrix();
   popMatrix();
   //Incrementing Rotation
   if (spinning) theta += 0.001;
@@ -156,4 +201,32 @@ void keyPressed() {
   if (key == 'n') {
      spinning = !spinning; 
   }
+  if(key == 'r') {
+    angle = 0;
+  }
+}
+
+void rotateAroundAxis(PVector axis, float th){
+    PVector w = axis.copy();
+    w.normalize();
+    PVector t = w.copy();
+    if (abs(w.x) - min(abs(w.x), abs(w.y), abs(w.z)) < 0.001) {
+      t.x = 1;
+    } else if (abs(w.y) - min(abs(w.x), abs(w.y), abs(w.z)) < 0.001) {
+      t.y = 1;
+    } else if (abs(w.z) - min(abs(w.x), abs(w.y), abs(w.z)) < 0.001) {
+      t.z = 1;
+    }
+    PVector u = w.cross(t);
+    u.normalize();
+    PVector v = w.cross(u);
+    applyMatrix(u.x, v.x, w.x, 0, 
+    u.y, v.y, w.y, 0, 
+    u.z, v.z, w.z, 0, 
+    0.0, 0.0, 0.0, 1);
+    rotateZ(th);
+    applyMatrix(u.x, u.y, u.z, 0, 
+    v.x, v.y, v.z, 0, 
+    w.x, w.y, w.z, 0, 
+    0.0, 0.0, 0.0, 1);
 }
