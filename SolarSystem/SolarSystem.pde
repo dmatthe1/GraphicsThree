@@ -118,26 +118,31 @@ void draw(){
   background(0);
   
   if(mousePressed == true && inRotateMode){
-    
-    float diffX = mouseX - pmouseX;
-    float diffY = mouseY - pmouseY;
-    if(diffX != 0 && diffY != 0){
-      float totalDist = sqrt(diffX*diffX + diffY*diffY);
-      angle = totalDist/width;
-      
-      PVector distVect = (horizontalVect.copy()).mult(diffX).add((verticalVect.copy()).mult(diffY)); 
-      cameraVector = (horizontalVect.copy()).cross(verticalVect.copy());
-      // worldspace direction mouse moved ^^
-
-      rotAxis = distVect.cross(cameraVector);
-      rotateAroundAxis(rotAxis, angle);
-      
-      PMatrix3D reset = new PMatrix3D();
-      reset.rotate(-angle, rotAxis.x, rotAxis.y, rotAxis.z);
-      reset.mult(horizontalVect, horizontalVect);
-      reset.mult(verticalVect, verticalVect);
+    if(mouseButton == LEFT){
+      //Glass Ball Rotation
+      float diffX = mouseX - pmouseX;
+      float diffY = mouseY - pmouseY;
+      if(diffX != 0 && diffY != 0){
+        float totalDist = sqrt(diffX*diffX + diffY*diffY);
+        angle = totalDist/width;
+        
+        PVector distVect = (horizontalVect.copy()).mult(diffX).add((verticalVect.copy()).mult(diffY)); 
+        cameraVector = (horizontalVect.copy()).cross(verticalVect.copy());
+        // worldspace direction mouse moved ^^
+  
+        rotAxis = distVect.cross(cameraVector);
+        rotateAroundAxis(rotAxis, angle);
+        
+        PMatrix3D reset = new PMatrix3D();
+        reset.rotate(-angle, rotAxis.x, rotAxis.y, rotAxis.z);
+        reset.mult(horizontalVect, horizontalVect);
+        reset.mult(verticalVect, verticalVect);
+      }
     }
-
+    else if (mouseButton == RIGHT){
+      //ROll Rotation
+      
+    }
   }
   
   //translate(-currX, -currY);
