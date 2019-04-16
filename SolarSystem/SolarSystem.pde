@@ -62,9 +62,14 @@ void setup(){
   
   //Saturn
   system.add(new TexturePlanet("Saturn", 130, 30, loadImage("saturn.jpg"), 0.428, 3500, new Ring[]{
+      new Ring(10, 0.45, 350, color(139, 69, 19), 5, 155),
+      new Ring(10, 0.45, 400, color(205,133,63), 5, 205),
+      new Ring(10, 0.45, 450, color(222,184,135), 5, 255),
+    /*
       new Ring(10, 0.45, 350, color(72,0,72), 5, 155),
       new Ring(10, 0.45, 400, color(200,0,200), 5, 205),
       new Ring(10, 0.45, 450, color(128,0,128), 5, 255),
+      */
   })); 
   
   
