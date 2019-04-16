@@ -218,12 +218,12 @@ void rotateAroundAxis(PVector axis, float th){
     u.normalize();
     PVector v = w.cross(u);
     applyMatrix(u.x, v.x, w.x, 0, 
-    u.y, v.y, w.y, 0, 
-    u.z, v.z, w.z, 0, 
-    0.0, 0.0, 0.0, 1);
+                u.y, v.y, w.y, 0, 
+                u.z, v.z, w.z, 0, 
+                0.0, 0.0, 0.0, 1);
     rotateZ(th);
     applyMatrix(u.x, u.y, u.z, 0, 
-    v.x, v.y, v.z, 0, 
-    w.x, w.y, w.z, 0, 
-    0.0, 0.0, 0.0, 1);
+                v.x, v.y, v.z, 0, 
+                w.x, w.y, w.z, 0, 
+                0.0, 0.0, 0.0, 1);
 }
