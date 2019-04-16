@@ -8,20 +8,15 @@ PVector cameraVector;
 PVector verticalVect;
 PVector horizontalVect;
 float angle;
-float eyeX;
-float eyeY;
-float eyeZ;
-float centerX;
-float centerY;
-float centerZ;
 float theta = 0;
 boolean spinning = false;
+boolean inRotateMode;
 
 
 //system variables
 ArrayList<TexturePlanet> system;
 Star[] stars = new Star[800];
-int planetSwitch = 6;
+int planetSwitch = 0;
 
 void setup(){
   //canvas setup
@@ -32,12 +27,12 @@ void setup(){
   verticalVect = new PVector(0, 1, 0);
   horizontalVect = new PVector(1, 0, 0);
   angle = 0;
-  
   //rotation setup
   x = width/2;
   y = height/2;
   tempX = width/2;
   tempY = height/2;
+  inRotateMode = false;
   
   //Planet Additions
   system = new ArrayList<TexturePlanet>();
@@ -81,77 +76,66 @@ void setup(){
   
   //Star Additions
   for (int i = 0; i < stars.length; i++) stars[i] = new Star(upperL, lowerL, createShape(SPHERE,5), loadImage("meteor.jpg"));
-  //pushMatrix();
+  translate(width/2, height/2);
+  pushMatrix();
 }
 
 void draw(){
-  //popMatrix();
-  pushMatrix();
+  popMatrix();
   textureMode(NORMAL);
   
-  
-  translate(width/2, height/2);
-  
   //Camera 
-  TexturePlanet focus = system.get(planetSwitch);
-  float currX = focus.getX(theta);
-  float currY = focus.getY(theta);
-  camera(currX, currY + focus.sph.r * 10, height, currX, currY, 0, 0, 1, 0);
-  eyeX = currX;
-  eyeY = currY + focus.sph.r * 10;
-  eyeZ = height;
-  centerX = currX;
-  centerY = currY;
-  centerZ = 0;
-  cameraVector = new PVector(eyeX-centerX, eyeY-centerY, eyeZ - centerZ);
-  //Fills
-  background(0);
-  //lights();
-  
-  translate(currX, currY);
-
-  //Rotation
-  
-  rotateAroundAxis(rotAxis, angle);
-  //println(angle);
-  //println(rotAxis.x + ", " + rotAxis.y + ", " + rotAxis.z);
-  
-  if(mousePressed == true){
+  if(! inRotateMode){
+    TexturePlanet focus = system.get(planetSwitch);
+    float currX = focus.getX(theta);
+    float currY = focus.getY(theta);
     
-    float diffX = mouseX - pmouseX;
-    float diffY = mouseY - pmouseY;
-    float totalDist = sqrt(diffX*diffX + diffY*diffY);
-    angle = totalDist/width;
-    
-    PVector distVect = (horizontalVect.copy()).mult(diffX).add((verticalVect.copy()).mult(diffY)); 
-    // worldspace direction mouse moved ^^
-
-    //PVector distVect = new PVector(mouseX - pmouseX, mouseY - pmouseY, 0);
-    
-    rotAxis = distVect.cross(cameraVector);
-    
+    camera(currX, currY + focus.sph.r * 10, height, currX, currY, 0, 0, 1, 0);
+    println("Not in Rotate Mode");
     /*
-    rotateX(-map(mouseY, 0, height, 0, TWO_PI));
-    rotateY(-map(mouseX, 0, width, 0, TWO_PI));
-    tempX = -map(mouseY, 0, height, 0, TWO_PI);
-    tempY = -map(mouseX, 0, width, 0, TWO_PI);
+    float eyeX = currX;
+    float eyeY = currY + focus.sph.r * 10;
+    float eyeZ = height;
+    float centerX = currX;
+    float centerY = currY;
+    float centerZ = 0;
     */
   }
   else {
-
-    /*
-    rotateX(-radians(0.5*frameCount));
-    rotateY(-radians(0.5*frameCount));
-    */
-
-    //rotateX(-radians(0.5*frameCount));
-    //rotateZ(radians(0.5*frameCount));
-    //rotateX(tempX);
-    //rotateY(tempY);
+    //camera(0.0, 5000.0, 1000.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    //Leave this commented out^
+    println("In Rotate Mode");
+  }
+  //println(eyeX + " " + eyeY + " " + eyeZ + " " + centerX + " " + centerY);
+  
+  //cameraVector = new PVector(eyeX-centerX, eyeY-centerY, eyeZ - centerZ);
+  //Fills
+  background(0);
+  
+  if(mousePressed == true && inRotateMode){
     
+    float diffX = mouseX - pmouseX;
+    float diffY = mouseY - pmouseY;
+    if(diffX != 0 && diffY != 0){
+      float totalDist = sqrt(diffX*diffX + diffY*diffY);
+      angle = totalDist/width;
+      
+      PVector distVect = (horizontalVect.copy()).mult(diffX).add((verticalVect.copy()).mult(diffY)); 
+      cameraVector = (horizontalVect.copy()).cross(verticalVect.copy());
+      // worldspace direction mouse moved ^^
+
+      rotAxis = distVect.cross(cameraVector);
+      rotateAroundAxis(rotAxis, angle);
+      
+      PMatrix3D reset = new PMatrix3D();
+      reset.rotate(-angle, rotAxis.x, rotAxis.y, rotAxis.z);
+      reset.mult(horizontalVect, horizontalVect);
+      reset.mult(verticalVect, verticalVect);
+    }
+
   }
   
-  translate(-currX, -currY);
+  //translate(-currX, -currY);
   
    //Star System Drawing
   for (Star star : stars) {
@@ -160,7 +144,7 @@ void draw(){
   }
   
   emissive(150, 0, 100);
-
+  
 
   //Planet System Drawing
   for (TexturePlanet planet : system) {
@@ -181,31 +165,36 @@ void draw(){
      popMatrix();
      popMatrix();
   }
-  //pushMatrix();
-  popMatrix();
+  pushMatrix();
   //Incrementing Rotation
   if (spinning) theta += 0.001;
   else theta = 0;
-  
+  /*
   fill(255);
+  
   textAlign(CENTER);
   textSize(30);
   text("Solar System", width/2, height-50);
   textSize(15);
   text("Focusing on " + focus.name, width/2, height-30);
+  */
 }
 
 void keyPressed() {
-  if (key == 'm') {
+  if (key == 'm' && ! inRotateMode) {
     if (planetSwitch < system.size() - 1) planetSwitch++;
     else planetSwitch = 0;
   }
-  
   if (key == 'n') {
      spinning = !spinning; 
   }
   if(key == 'r') {
-    angle = 0;
+    if(inRotateMode) inRotateMode = false;
+    else {
+      inRotateMode = true;
+      planetSwitch = 0;
+      //Change planetSwitch to be the Sun
+    }
   }
 }
 
