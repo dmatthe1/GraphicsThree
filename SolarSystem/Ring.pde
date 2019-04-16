@@ -3,11 +3,12 @@ class Ring {
   float rotation;
   float size;
   color col;
+  //PImage img = loadImage("saturn.jpg");
   PVector vertices[], vertices2[];
   int pts = 40; 
   float angle = 0;
   float radius; //default 10
-  
+
   // lathe segments
   int segments = 60;
   float latheAngle = 0;
