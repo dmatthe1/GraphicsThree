@@ -141,11 +141,14 @@ void draw(){
     }
     else if (mouseButton == RIGHT){
       //ROll Rotation
-      float diff = mouseX - pmouseX;
-      diff *= .1;
-      angle += diff/width;
-      rotAxis = new PVector(0.0, 0.0, 5000.0);
+      float diffX = mouseX - pmouseX;
+      diffX *= .1;
+      angle += diffX/width;
+      //rotAxis = new PVector(0.0, 0.0, 5000.0);
+      
+      rotAxis = new PVector(0.0, 5000.0, 0.0);
       rotateAroundAxis(rotAxis, angle);
+     
     }
   }
   
