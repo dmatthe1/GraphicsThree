@@ -28,7 +28,7 @@ class Ring {
     stroke(col);
     strokeWeight(weight);
     noFill();
-    rotateX(HALF_PI-rotation);
+    //rotateX(HALF_PI-rotation);
     //ellipse(0,0, size, size);
     makeTorus();
     popMatrix();
@@ -61,11 +61,13 @@ class Ring {
         vertices2[j].z = vertices[j].z;
         // optional helix offset
         vertex(vertices2[j].x, vertices2[j].y, vertices2[j].z);
-      }
+      }      
       // create extra rotation for helix
       latheAngle+=360.0/segments;
       
       endShape();
     }
+    
+    
   }
 }

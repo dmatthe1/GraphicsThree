@@ -10,7 +10,8 @@ class TexturePlanet {
   //moons
   TexturePlanet[] moons;
   Ring[] rings;
- 
+  TextureCylinder[] cylinder;
+  
   //No rings or moons
   TexturePlanet(String name, float radius, int numSegments, PImage img, float speed, float translation) {
      this.sph = new TextureSphere(radius, numSegments, img);

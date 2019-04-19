@@ -49,7 +49,9 @@ void setup(){
   //Earth
   system.add(new TexturePlanet("Earth", 70, 30, loadImage("earth.jpg"), 1, 1930, new TexturePlanet[]{
       new TexturePlanet("Moon", 20, 30, loadImage("moon.jpg"), 10, 150)
-  })); 
+  }));
+  
+  //system.add(new TexturePlanet("Satellite", 10, 15, loadImage("metal.jpg"), 10, 150));
   
   //Mars
   system.add(new TexturePlanet("Mars", 70, 30, loadImage("mars.jpg"), 1.029, 2410, new TexturePlanet[]{
@@ -96,7 +98,7 @@ void draw(){
     float currY = focus.getY(theta);
     
     camera(currX, currY + focus.sph.r * 10, height, currX, currY, 0, 0, 1, 0);
-    println("Not in Rotate Mode");
+    //println("Not in Rotate Mode");
     /*
     float eyeX = currX;
     float eyeY = currY + focus.sph.r * 10;
@@ -109,7 +111,7 @@ void draw(){
   else {
     //camera(0.0, 5000.0, 1000.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     //Leave this commented out^
-    println("In Rotate Mode");
+    //println("In Rotate Mode");
   }
   //println(eyeX + " " + eyeY + " " + eyeZ + " " + centerX + " " + centerY);
   
