@@ -48,8 +48,10 @@ void setup(){
   
   //Earth
   system.add(new TexturePlanet("Earth", 70, 30, loadImage("earth.jpg"), 1, 1930, new TexturePlanet[]{
-      new TexturePlanet("Moon", 20, 30, loadImage("moon.jpg"), 10, 150)
-  }));
+      new TexturePlanet("Moon", 20, 30, loadImage("moon.jpg"), 10, 160)}, new TextureCylinder[]{
+      new TextureCylinder("satA", 2, 30, loadImage("earth.jpg"), 3, 140),
+      new TextureCylinder("satB", 1, 30, loadImage("metal.jpg"), 1, 120),
+      }));
   
   //system.add(new TexturePlanet("Satellite", 10, 15, loadImage("metal.jpg"), 10, 150));
   
@@ -90,10 +92,10 @@ void setup(){
 void draw(){
   popMatrix();
   textureMode(NORMAL);
-  
+  TexturePlanet focus = system.get(planetSwitch);
   //Camera 
   if(! inRotateMode){
-    TexturePlanet focus = system.get(planetSwitch);
+    
     float currX = focus.getX(theta);
     float currY = focus.getY(theta);
     
@@ -172,6 +174,13 @@ void draw(){
      translate(planet.translation, 0);
      planet.display();
      
+     for (TextureCylinder sat : planet.satellites) {
+       pushMatrix();
+       if (spinning) rotate(theta * sat.speed);
+       translate(sat.translation, 0);
+       sat.display();
+       popMatrix();
+     }
      for (Ring ring : planet.rings) ring.display();
      
      pushMatrix();
@@ -185,18 +194,20 @@ void draw(){
      popMatrix();
   }
   pushMatrix();
+  
+  
   //Incrementing Rotation
   if (spinning) theta += 0.001;
   else theta = 0;
-  /*
+  
   fill(255);
   
   textAlign(CENTER);
   textSize(30);
-  text("Solar System", width/2, height-50);
+  text("Solar System", width/2, height-50, 0);
   textSize(15);
-  text("Focusing on " + focus.name, width/2, height-30);
-  */
+  text("Focusing on " + focus.name, width/2, height-30, 0);
+  
 }
 
 void keyPressed() {

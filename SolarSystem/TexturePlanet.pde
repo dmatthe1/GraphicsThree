@@ -10,7 +10,7 @@ class TexturePlanet {
   //moons
   TexturePlanet[] moons;
   Ring[] rings;
-  TextureCylinder[] cylinder;
+  TextureCylinder[] satellites;
   
   //No rings or moons
   TexturePlanet(String name, float radius, int numSegments, PImage img, float speed, float translation) {
@@ -21,6 +21,7 @@ class TexturePlanet {
      
      this.moons = new TexturePlanet[]{};
      this.rings = new Ring[]{};
+     this.satellites = new TextureCylinder[]{};
   }
   
   //No moons
@@ -32,6 +33,7 @@ class TexturePlanet {
     this.name = name;
     
     this.moons = new TexturePlanet[]{};
+    this.satellites = new TextureCylinder[]{};
   }
   
   //No rings
@@ -43,6 +45,7 @@ class TexturePlanet {
     this.name = name;
     
     this.rings = new Ring[]{};
+    this.satellites = new TextureCylinder[]{};
   }
   
   //Rings and moons
@@ -53,6 +56,19 @@ class TexturePlanet {
     this.moons = moons;
     this.rings = rings;
     this.name = name;
+    
+    this.satellites = new TextureCylinder[]{};
+  }
+  
+  TexturePlanet(String name, float radius, int numSegments, PImage img, float speed, float translation, TexturePlanet[] moons, TextureCylinder[] satellites) {
+    this.sph = new TextureSphere(radius, numSegments, img); 
+    this.speed = speed;
+    this.translation = translation;
+    this.moons = moons;
+    this.name = name;
+    this.satellites = satellites;
+    
+    this.rings = new Ring[]{};
   }
   
   float getX(float theta) {
