@@ -49,8 +49,8 @@ void setup(){
   //Earth
   system.add(new TexturePlanet("Earth", 70, 30, loadImage("earth.jpg"), 1, 1930, new TexturePlanet[]{
       new TexturePlanet("Moon", 20, 30, loadImage("moon.jpg"), 10, 160)}, new TextureCylinder[]{
-      new TextureCylinder("satA", 2, 30, loadImage("earth.jpg"), 3, 140),
-      new TextureCylinder("satB", 1, 30, loadImage("metal.jpg"), 1, 120),
+      new TextureCylinder("satA", 5, 190, 30, loadImage("metal.jpg"), 3, 50),
+      new TextureCylinder("satB", 5, 190, 30, loadImage("metal.jpg"), 1, 80),
       }));
   
   //system.add(new TexturePlanet("Satellite", 10, 15, loadImage("metal.jpg"), 10, 150));
